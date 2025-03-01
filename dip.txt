@@ -1,0 +1,453 @@
+Prac- 7
+
+a =imread('D:\TYCS_509\sunder.jpg');
+a1 = double(a);
+a2 = rgb2gray(uint8(a1));
+[row, col] = size(a2);
+c = row * col;
+h = zeros(1, 256);
+z = zeros(1, 256);
+
+for m = 1:row
+    for n = 1:col
+        t = a2(m, n);
+        h(t + 1) = h(t + 1) + 1;
+    end
+end
+
+pdf = h / c;
+cdf = zeros(1, 256);
+cdf(1) = pdf(1);
+
+for x = 2:256
+    cdf(x) = pdf(x) + cdf(x - 1);
+end
+
+new = round(cdf * 255);
+b = zeros(row, col);
+
+for p = 1:row
+    for q = 1:col
+        temp = a2(p, q) + 1;
+        b(p, q) = new(temp);
+        t = b(p, q);
+        z(t + 1) = z(t + 1) + 1;
+    end
+end
+
+subplot(2,2,1);
+imshow(uint8(a2));
+title('Original Image');
+
+subplot(2,2,2);
+bar(h);
+title('Histogram of Original Image');
+
+subplot(2,2,3);
+imshow(uint8(b));
+title('Histogram Equalized Image');
+
+subplot(2,2,4);
+bar(z);
+title('Equalized Histogram');
+
+
+Prac - 8
+
+w = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 ;
+0 1 1 1 1 0 0 0 0 1 1 1 1 0;
+0 1 1 1 1 0 0 0 0 1 1 1 1 0;
+0 1 1 1 1 1 1 1 1 1 1 1 1 0;
+0 1 1 1 1 1 1 1 1 1 1 1 1 0;
+0 1 1 1 1 0 0 0 0 1 1 1 1 0;
+0 1 1 1 1 0 0 0 0 1 1 1 1 0;
+0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+disp(w);
+ se1 = strel('square',3);
+ disp(se1);
+ im1 = imerode(w,se1);
+ i2 = imdilate(w,se1);
+ subplot(1,3,1);
+ imshow(w);
+ title('original');
+subplot(1,3,2);
+ imshow(im1);
+ title('erorde img');
+ subplot(1,3,3);
+ imshow(i2);
+title('dilated img');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Practical 9
+a =imread('D:\TYCS_509\sunder.jpg');
+i = rgb2gray(a);
+
+b = imnoise(i, 'gaussian');
+
+h1 = (1/9) * ones(3, 3); % 3x3 averaging filter
+h2 = (1/25) * ones(5, 5); % 5x5 averaging filter
+
+output1 = conv2(double(b), h1, 'same');
+output2 = conv2(double(b), h2, 'same');
+
+subplot(2, 2, 1);
+imshow(i);
+title('Original Image');
+
+subplot(2, 2, 2);
+imshow(b);
+title('Image with Noise');
+
+subplot(2, 2, 3);
+imshow(uint8(output1));
+title('Smoothed Image with 3x3 Filter');
+
+subplot(2, 2, 4);
+imshow(uint8(output2));
+title('Smoothed Image with 5x5 Filter');
+
+Practical 10
+a =imread('D:\TYCS_509\sunder.jpg');
+ i = rgb2gray(a);
+ h = fspecial('unsharp');
+ b = imfilter(i,h);
+ subplot(1,2,1);
+ imshow(i);
+ title('Original Img');
+subplot(1,2,2);
+imshow(b);
+title('high pass filtered img')
+
+
+
+1 A
+
+
+disp('TYCS_509_Sunder');
+disp('practical 1a');
+
+X = [4, 5, 6, 7, 8, 9];
+H = [1; 1; 1];
+
+Y = conv2(X, H, 'full');
+disp(Y);
+
+
+1B
+
+disp('TYCS_509_Sunder');
+disp('practical 1b');
+
+x = [1, 2, 3, 4];
+disp(x);
+
+h = [5, 6; 7, 8];
+disp(h);
+
+lenX = length(x);
+lenH = length(h);
+n = max(lenX, lenH);
+
+a = x';
+v1 = reshape(a, 1, []);
+
+b = h';
+v2 = reshape(b, 1, []);
+
+y = cconv(v1, v2, n);
+
+disp('Circular convoluted vector Y=');
+disp(y);
+
+
+
+
+
+
+
+2A
+
+
+
+img1 = imread('C:\Users\Neeraj\OneDrive\Desktop\call-icon.png');
+img = rgb2gray(img1);
+
+subplot(1,2,1);
+imshow(img);
+title('Original Image');
+
+L = 255;
+c = L / log10(1 + L);
+d = c * log10(1 + double(img));
+a = uint8(d);
+
+subplot(1,2,2);
+imshow(a);
+title('Log Transform');
+
+
+2B
+
+>> img1 = imread('D:\TYCS_509\DIS\sunder.jpg');
+img = rgb2gray(img1);  
+
+subplot(1,2,1);  
+imshow(img);  
+title('Original Image');  
+
+s = size(img);  
+
+for x = 1:s(1)  
+    for y = 1:s(2)  
+        img_neg(x, y) = 255 - img(x, y);  
+    end  
+end  
+
+img_n = uint8(img_neg);  
+
+subplot(1,2,2);  
+imshow(img_n);  
+title('Image Negation');  
+
+
+
+
+2C
+
+
+img1 =imread(‘C:\Users\Neeraj\OneDrive\Pictures\Me\neeraj2.jpg');
+img = rgb2gray(img1);  
+
+subplot(1,2,1);  
+imshow(img);  
+title('Original Image');  
+
+s = size(img);  
+C = 1;  
+gamma = 3;  
+img = double(img);  
+
+for x = 1:s(1)  
+    for y = 1:s(2)  
+        j(x, y) = C * (img(x, y) ^ gamma);  
+    end  
+end  
+
+subplot(1,2,2);  
+imshow(j, []);  
+title('Power Law Transformation');  
+
+
+
+3A
+
+img1 = imread('D:\TYCS_509\DIS\sunder.jpg');
+img = rgb2gray(img1);  
+
+subplot(1,3,1);  
+imshow(img);  
+title('Original Image');  
+
+B = double(img) - 140;  
+subplot(1,3,2);  
+imshow(uint8(B));  
+title('Brightness Decreased');  
+
+B = double(img) + 140;  
+subplot(1,3,3);  
+imshow(uint8(B));  
+title('Brightness Increased');  
+
+
+3B
+
+img1 = imread('D:\TYCS_509\DIS\sunder.jpg');
+img = rgb2gray(img1);  
+
+subplot(1,3,1);  
+imshow(img);  
+title('Original Image');  
+
+B = double(img) * 0.5;  
+subplot(1,3,2);  
+imshow(uint8(B));  
+title('Contrast Decreased');  
+
+B = double(img) * 2;  
+subplot(1,3,3);  
+imshow(uint8(B));  
+title('Contrast Increased');  
+
+
+
+
+
+
+3C
+
+p = imread('D:\TYCS_509\DIS\sunder.jpg');
+pl = rgb2gray(p);  
+
+subplot(1,2,1);  
+imshow(pl);  
+title('Original Image');  
+
+T = input('Enter the value for Threshold: ');  
+
+[row, col] = size(pl);  
+
+for x = 1:row  
+    for y = 1:col  
+        if pl(x, y) < T  
+            pl(x, y) = 0;  
+        else  
+            pl(x, y) = 255;  
+        end  
+    end  
+end  
+
+subplot(1,2,2);  
+imshow(pl);  
+title('Threshold Image');  
+
+
+
+
+
+
+
+4
+
+img = imread('C:\My Folder\Wallpaper\demon-slayer-3840x2160-16945.jpg');
+
+subplot(1,4,1);
+imshow(img);
+title('Original Image');
+
+s = size(img);
+
+redp = img(:,:,1);
+greenp = img(:,:,2);
+bluep = img(:,:,3);  % Fixed missing '=' in assignment
+
+subplot(1,4,2);
+imshow(greenp);
+title('Green Plane');
+
+subplot(1,4,3);
+imshow(redp);
+title('Red Plane');
+
+subplot(1,4,4);
+imshow(bluep);
+title('Blue Plane');
+
+
+
+
+
+
+
+4B
+
+img = imread('D:\TYCS_509\DIS\sunder.jpg');
+
+subplot(1,2,1);
+imshow(img);
+title('Original Image');
+
+s = size(img);
+
+% Extract color planes
+redp = img(:,:,1);
+greenp = img(:,:,2);
+bluep = img(:,:,3);
+
+OP(:,:,1) = greenp;  
+OP(:,:,2) = bluep;   
+OP(:,:,3) = redp;   
+
+subplot(1,2,2);
+imshow(OP);
+title('Pseudo Coloring');
+
+5A
+
+img1 =imread('D:\TYCS_509\DIS\sunder.jpg');
+img = rgb2gray(img1);
+
+subplot(1,3,1);
+imshow(img1);
+
+title('Original Image');
+B = double(img1) - 140;
+subplot(1,3,2);
+
+imshow(uint8(B));
+title('Brightness Decreased');
+B = double(img1) + 140;
+
+subplot(1,3,3);
+imshow(uint8(B));
+title('Brightness Increased');
+
+5B
+
+img1 = imread("D:\TYCS_509\sunder.jpg");
+subplot(1,2,1);
+
+imshow(img1);
+title('Original Image');
+B = double(img1) * 3;
+
+subplot(1,2,2);
+imshow(uint8(B));
+title('Contrast Adjusted');
+
+
+
+
+
+
+
+5C
+
+pl = imread('D:\TYCS_509\sunder.jpg');
+
+subplot(1,2,1);
+imshow(pl);
+
+title('Original Image');
+T = input('Enter the value for Threshold: ');
+[row, col] = size(pl);
+
+for x = 1:row
+    for y = 1:col
+        if pl(x, y) < T
+            p1(x, y) = 0;
+        else
+            p1(x, y) = 255;
+        end
+    end
+end
+subplot(1,2,2);
+imshow(p1);
+title('Threshold Image');
